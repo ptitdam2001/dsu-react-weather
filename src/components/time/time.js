@@ -1,16 +1,24 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 class Clock extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            date: new Date()
+            date: new Date(),
+            onSelect: () => {}
         };
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
-        this.timerId = setInterval( () => this.tick(), 1000);
+        this.timerId = setInterval(() => this.tick(), 1000);
+
+        this.setState(function (prevState, props) {
+            return {
+                onSelect: props.onSelect
+            };
+        });
     }
 
     componentWillUnmount() {
@@ -23,13 +31,21 @@ class Clock extends Component {
         });
     }
 
+    handleClick(evt) {
+        evt.preventDefault();
+        if (typeof this.state.onSelect === 'function') {
+            this.state.onSelect(this.state.date);
+        }
+    }
+
     render() {
-        return (
-          <div>{this.state.date.toLocaleTimeString()}</div>  
+        return ( 
+            <span>
+                <div> {this.state.date.toLocaleTimeString()} </div>
+                <button onClick = {this.handleClick}> Click </button>
+            </span>
         );
     }
 }
-
-// setInterval(Time, 1000);
 
 export default Clock;

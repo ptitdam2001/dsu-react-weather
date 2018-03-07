@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
+import Paper from 'material-ui/Paper';
+import AppBar from 'material-ui/AppBar';
 
 import OpenWeatherService from '../../services/openWeatherMap';
 
 import 'react-flexbox-grid/dist/react-flexbox-grid.css';
+
+const paperStyle = {};
 
 class WeatherWidget extends Component {
 
@@ -25,8 +29,12 @@ class WeatherWidget extends Component {
     componentWillUnmount() {}
 
     
-
     handleClick(evt) {
+        evt.preventDefault();
+    }
+
+    openMenu(evt) {
+        alert('Open menu');
         evt.preventDefault();
     }
 
@@ -35,7 +43,10 @@ class WeatherWidget extends Component {
             <Grid fluid>
                 <Row>
                     <Col xs={6} md={6}>
-                        <pre>{JSON.stringify(this.state.weather, null, 2)}</pre>
+                        <Paper style={paperStyle} zDepth={2}>
+                            <AppBar title="Title" iconClassNameRight="muidocs-icon-navigation-expand-more" onLeftIconButtonClick={this.openMenu}/>
+                            <pre>{JSON.stringify(this.state.weather, null, 2)}</pre>
+                        </Paper>
                     </Col>
                     <Col md={6}>coucou</Col>
                 </Row>

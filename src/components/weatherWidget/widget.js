@@ -8,6 +8,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 
 
 import OpenWeatherService from '../../services/openWeatherMap';
+import WeatherIcon from '../weatherIcon/weatherIcon';
 
 import 'react-flexbox-grid/dist/react-flexbox-grid.css';
 
@@ -30,7 +31,8 @@ class WeatherWidget extends Component {
             console.log(result);
             this.setState({
                 weather: Object.assign({}, result),
-                icon: _head(result.weather).icon
+                icon: _head(result.weather).icon,
+                iconId: _head(result.weather).id
             });
         }).catch(error => console.warn(error));
     }
@@ -55,6 +57,7 @@ class WeatherWidget extends Component {
                         <AppBar title={this.state.weather.name} iconClassNameRight="muidocs-icon-navigation-expand-more" onLeftIconButtonClick={this.openMenu}/>
                         <div>
                         { this.state.icon && this.state.weather && <img src={'http://openweathermap.org/img/w/' + this.state.icon + '.png'} alt={_head(this.state.weather.weather).main}/>}
+                        { this.state.iconId && <WeatherIcon name={this.state.iconId} size="50"/> }
                         </div>
                         <Scrollbars className="area" autoHeight autoHeightMax={400}>
                             <pre>{JSON.stringify(this.state.weather, null, 2)}</pre>

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Flexbox from 'flexbox-react';
+
 import './App.css';
 import Header from '../../components/header/header';
 import Clock from '../../components/time/time';
@@ -17,13 +19,22 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-        <div className="App">
-          <Header name="Damien"/>
-          <div className="App-intro">
-            <Clock onSelect={this.onSelect}/>
-            <WeatherWidget token="59fd2768e2c9abcb3cf35e48643a34f5"/>
-          </div>
-        </div>
+        <Flexbox flexDirection="column" minHeight="100vh">
+          <Flexbox height="150px" className="App">
+            <Header name="Damien"/>
+          </Flexbox>
+          <Flexbox flexGrow={1} flexDirection="column" padding="10px">
+            <div>
+              <Clock onSelect={this.onSelect}/>
+            </div>
+            <Flexbox flexGrow={1}>
+              <WeatherWidget token="59fd2768e2c9abcb3cf35e48643a34f5"/>
+            </Flexbox>
+          </Flexbox>
+          <Flexbox element="footer" height="60px">
+            Footer
+          </Flexbox>
+        </Flexbox>
       </MuiThemeProvider>
     );
   }

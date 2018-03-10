@@ -1,11 +1,17 @@
 import React, {Component} from 'react';
-import { Grid, Row, Col } from 'react-flexbox-grid';
+import Flexbox from 'flexbox-react';
+import _head from 'lodash/head';
+
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
+import { Scrollbars } from 'react-custom-scrollbars';
+
 
 import OpenWeatherService from '../../services/openWeatherMap';
 
 import 'react-flexbox-grid/dist/react-flexbox-grid.css';
+
+import './widget.css';
 
 const paperStyle = {};
 
@@ -22,7 +28,10 @@ class WeatherWidget extends Component {
     componentDidMount() {
         (new OpenWeatherService(this.state.token)).findByCity('Paris', 'fr').then(result => {
             console.log(result);
-            this.setState({weather: Object.assign({}, result)});
+            this.setState({
+                weather: Object.assign({}, result),
+                icon: _head(result.weather).icon
+            });
         }).catch(error => console.warn(error));
     }
 
@@ -40,17 +49,21 @@ class WeatherWidget extends Component {
 
     render() {
         return (
-            <Grid fluid>
-                <Row>
-                    <Col xs={6} md={6}>
-                        <Paper style={paperStyle} zDepth={2}>
-                            <AppBar title="Title" iconClassNameRight="muidocs-icon-navigation-expand-more" onLeftIconButtonClick={this.openMenu}/>
+            <Flexbox flexDirection="row" width="100%" padding="5px">
+                <Flexbox flexGrow={50}>
+                    <Paper style={paperStyle} zDepth={2}>
+                        <AppBar title={this.state.weather.name} iconClassNameRight="muidocs-icon-navigation-expand-more" onLeftIconButtonClick={this.openMenu}/>
+                        <div>
+                        { this.state.icon && this.state.weather && <img src={'http://openweathermap.org/img/w/' + this.state.icon + '.png'} alt={_head(this.state.weather.weather).main}/>}
+                        </div>
+                        <Scrollbars className="area" autoHeight autoHeightMax={400}>
                             <pre>{JSON.stringify(this.state.weather, null, 2)}</pre>
-                        </Paper>
-                    </Col>
-                    <Col md={6}>coucou</Col>
-                </Row>
-            </Grid>
+                        </Scrollbars>
+
+                    </Paper>
+                </Flexbox>
+                <Flexbox flexGrow={50}>Coucou</Flexbox>
+            </Flexbox>
         );
     }
 }

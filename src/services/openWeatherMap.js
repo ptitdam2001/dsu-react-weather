@@ -24,14 +24,16 @@ function getPromiseFromFetch(queryString) {
 
 
 class OpenWeatherService {
-    constructor(token) {
+    constructor(token, lang="en") {
         this.token = token;
+        this.lang = lang
     }
 
     findByCity(city, country) {
         const queryString = {
             q: city + (country && country.length > 0 ? ',' + country : ''),
-            APPID: this.token
+            APPID: this.token,
+            lang: this.lang
         };
 
         return getPromiseFromFetch(queryString);
